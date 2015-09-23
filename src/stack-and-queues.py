@@ -26,16 +26,21 @@ class Stack(object):
 
   def pop(self):
     returnEl = None
-    while not self.queue1.empty():
-      el = self.queue1.poll()
-      if self.queue1.empty():
+    if self.queue1.empty() and self.queue2.empty():
+      return None
+
+    full_queue = self.queue1
+    empty_queue = self.queue2
+    if self.queue1.empty():
+      full_queue = self.queue2
+      empty_queue = self.queue1
+
+    while True:
+      el = full_queue.poll()
+      if full_queue.empty():
         returnEl = el
         break
-      self.queue2.add(el)
-
-    while not self.queue2.empty():
-      self.queue1.add(self.queue2.poll())
-
+      empty_queue.add(el)
     return returnEl
 
 class TestStack(unittest.TestCase):
